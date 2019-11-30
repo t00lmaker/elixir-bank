@@ -6,13 +6,13 @@ Desafio técnico para criação de uma API de um banco utlizando Elixir.
 
 ## Features
   
-  1. Login com [JWT](https://jwt.io/)
-  2. Cadastro de Clientes
-  3. Operações bancarias
-  ..* Saque de conta
-  ..* Depositos em conta
-  ..* Transferências entre contas
-  ..* Relátorio de Transaçẽs por dia, mês, ano e total. 
+1. Login com [JWT](https://jwt.io/)
+2. Cadastro de Clientes
+3. Operações bancarias:
+ * Saque de conta.
+ * Depositos em conta.
+ * Transferências entre contas.
+ * Relátorio de Transaçẽs por dia, mês, ano e total. 
   
 ## Setup
 
