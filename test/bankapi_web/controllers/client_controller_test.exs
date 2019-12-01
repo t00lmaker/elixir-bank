@@ -87,7 +87,6 @@ defmodule BankWeb.ClientControllerTest do
 
       conn = get(conn, Routes.client_path(conn, :show, client))
 
-            
       assert %{
                "id" => id,
                "birth_date" => "some birth_date",
@@ -95,7 +94,6 @@ defmodule BankWeb.ClientControllerTest do
                "social_id" => "some social_id",
                "is_active" => false
              } = json_response(conn, 200)["data"]
-      
     end
   end
 

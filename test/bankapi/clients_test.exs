@@ -7,7 +7,11 @@ defmodule Bank.ClientsTest do
     alias Bank.Clients.Client
 
     @valid_attrs %{birth_date: "some birth_date", name: "some name", social_id: "some social_id"}
-    @update_attrs %{birth_date: "some updated birth_date", name: "some updated name", social_id: "some updated social_id"}
+    @update_attrs %{
+      birth_date: "some updated birth_date",
+      name: "some updated name",
+      social_id: "some updated social_id"
+    }
     @invalid_attrs %{birth_date: nil, name: nil, social_id: nil}
 
     def client_fixture(attrs \\ %{}) do
@@ -66,4 +70,3 @@ defmodule Bank.ClientsTest do
     end
   end
 end
-

@@ -11,7 +11,8 @@ defmodule BankWeb.ClientView do
   end
 
   def render("client.json", %{client: client}) do
-    %{id: client.id,
+    %{
+      id: client.id,
       name: client.name,
       social_id: client.social_id,
       birth_date: client.birth_date,
