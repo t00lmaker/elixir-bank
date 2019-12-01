@@ -1,4 +1,5 @@
 # Elixir Bank (Desafio Técnico)
+
 [![Build Status](https://travis-ci.org/t00lmaker/starbus-machine.svg?branch=master)](https://travis-ci.org/t00lmaker/elixir-bank)
 [![Coverage Status](https://coveralls.io/repos/github/t00lmaker/elixir-bank/badge.svg)](https://coveralls.io/github/t00lmaker/elixir-bank)
 [![Inline docs](http://inch-ci.org/github/t00lmaker/elixir-bank.svg?branch=HEAD)](http://inch-ci.org/github/t00lmaker/elixir-bank)
