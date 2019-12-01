@@ -51,7 +51,7 @@ defmodule Bank.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.10", only: :test, runtime: false},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:inch_ex, only: :docs}
+      {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]}
     ]
   end
 
