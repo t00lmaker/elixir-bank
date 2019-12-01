@@ -43,7 +43,8 @@ defmodule BankWeb.ClientControllerTest do
                "id" => id,
                "birth_date" => "some birth_date",
                "name" => "some name",
-               "social_id" => "some social_id"
+               "social_id" => "some social_id",
+               "is_active" => true
              } = json_response(conn, 200)["data"]
     end
 
@@ -66,7 +67,8 @@ defmodule BankWeb.ClientControllerTest do
                "id" => id,
                "birth_date" => "some updated birth_date",
                "name" => "some updated name",
-               "social_id" => "some updated social_id"
+               "social_id" => "some updated social_id",
+               "is_active" => true
              } = json_response(conn, 200)["data"]
     end
 
@@ -76,16 +78,22 @@ defmodule BankWeb.ClientControllerTest do
     end
   end
 
-  describe "delete client" do
+  describe "delete client inactive client" do
     setup [:create_client]
 
     test "deletes chosen client", %{conn: conn, client: client} do
       conn = delete(conn, Routes.client_path(conn, :delete, client))
       assert response(conn, 204)
 
-      assert_error_sent 404, fn ->
-        get(conn, Routes.client_path(conn, :show, client))
-      end
+      conn = get(conn, Routes.client_path(conn, :show, client))
+
+      assert %{
+               "id" => id,
+               "birth_date" => "some birth_date",
+               "name" => "some name",
+               "social_id" => "some social_id",
+               "is_active" => false
+             } = json_response(conn, 200)["data"]
     end
   end
 
