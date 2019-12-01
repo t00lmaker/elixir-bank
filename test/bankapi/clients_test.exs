@@ -54,10 +54,10 @@ defmodule Bank.ClientsTest do
       assert client == Clients.get_client!(client.id)
     end
 
-    test "delete_client/1 deletes the client" do
+    test "delete_client/1 inactive client (no delete)." do
       client = client_fixture()
-      assert {:ok, %Client{}} = Clients.delete_client(client)
-      assert_raise Ecto.NoResultsError, fn -> Clients.get_client!(client.id) end
+      assert {:ok, %Client{} = client} = Clients.delete_client(client)
+      refute client.is_active
     end
 
     test "change_client/1 returns a client changeset" do
@@ -66,3 +66,4 @@ defmodule Bank.ClientsTest do
     end
   end
 end
+
