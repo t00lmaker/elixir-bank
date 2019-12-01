@@ -14,6 +14,8 @@ defmodule BankWeb.ClientView do
     %{id: client.id,
       name: client.name,
       social_id: client.social_id,
-      birth_date: client.birth_date}
+      birth_date: client.birth_date,
+      is_active: client.is_active
+    }
   end
 end

@@ -8,6 +8,7 @@ defmodule Bank.Clients.Client do
     field :birth_date, :string
     field :name, :string
     field :social_id, :string
+    field :is_active, :boolean
 
     timestamps()
   end
@@ -15,7 +16,7 @@ defmodule Bank.Clients.Client do
   @doc false
   def changeset(client, attrs) do
     client
-    |> cast(attrs, [:name, :social_id, :birth_date])
+    |> cast(attrs, [:name, :social_id, :birth_date, :is_active])
     |> validate_required([:name, :social_id, :birth_date])
   end
 end
