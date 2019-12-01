@@ -9,8 +9,16 @@ defmodule Bank.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
       aliases: aliases(),
-      deps: deps()
+      preferred_cli_env: [coveralls: :test],
+      # Docs
+      name: "Elixir Bank",
+      source_url: "https://github.com/t00lmaker/elixir-bank/",
+      homepage_url: "https://github.com/t00lmaker/elixir-bank/",
+      # The main page in the docs
+      docs: [main: "Elixir Bank", logo: "", extras: ["README.md"]]
     ]
   end
 
