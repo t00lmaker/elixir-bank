@@ -86,7 +86,9 @@ defmodule Bank.Clients do
 
   """
   def delete_client(%Client{} = client) do
-    Repo.delete(client)
+    client
+    |> Ecto.Changeset.change(%{is_active: false})
+    |> Repo.update()
   end
 
   @doc """

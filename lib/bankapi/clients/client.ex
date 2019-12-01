@@ -8,7 +8,7 @@ defmodule Bank.Clients.Client do
     field :birth_date, :string
     field :name, :string
     field :social_id, :string
-    field :is_active, :boolean
+    field :is_active, :boolean, default: true
 
     timestamps()
   end
