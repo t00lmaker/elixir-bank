@@ -3,10 +3,13 @@ defmodule Bank.ClientsTest do
 
   alias Bank.Clients
 
+  @valid_attrs %{birth_date: "some birth_date", name: "some name", social_id: "some social_id"}
+
+  def client_valid_attrs, do: @valid_attrs
+
   describe "clients" do
     alias Bank.Clients.Client
 
-    @valid_attrs %{birth_date: "some birth_date", name: "some name", social_id: "some social_id"}
     @update_attrs %{
       birth_date: "some updated birth_date",
       name: "some updated name",

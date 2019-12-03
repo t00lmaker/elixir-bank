@@ -11,6 +11,7 @@ defmodule Bank.Clients.Client do
     field :name, :string
     field :social_id, :string
     field :is_active, :boolean, default: true
+    has_many :accounts, Bank.Accounts.Account
 
     timestamps()
   end

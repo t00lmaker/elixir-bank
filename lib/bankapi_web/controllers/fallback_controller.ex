@@ -19,4 +19,16 @@ defmodule BankWeb.FallbackController do
     |> put_view(BankWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, %{msg: msg, status: status}}) do
+    conn
+    |> put_status(status)
+    |> text(msg)
+  end
+
+  def call(conn, error) do
+    conn
+    |> put_status(:internal_server_error)
+    |> text(error)
+  end
 end
