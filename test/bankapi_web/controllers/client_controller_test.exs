@@ -1,8 +1,11 @@
 defmodule BankWeb.ClientControllerTest do
   use BankWeb.ConnCase
 
+  import Ecto.Query, only: [from: 2]
+  alias Bank.Accounts.Account
   alias Bank.Clients
   alias Bank.Clients.Client
+  alias Bank.Repo
 
   @create_attrs %{
     birth_date: "some birth_date",
@@ -51,6 +54,21 @@ defmodule BankWeb.ClientControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    test "a new account to new client", %{conn: conn} do
+      conn = post(conn, Routes.client_path(conn, :create), client: @create_attrs)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+      query = from a in Account, where: [client_id: ^id]
+      assert Repo.exists?(query)
+    end
+
+    test "a new account with initial balance of 1000 to new client", %{conn: conn} do
+      conn = post(conn, Routes.client_path(conn, :create), client: @create_attrs)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+      query = from a in Account, where: [client_id: ^id]
+      account = Repo.one(query)
+      assert account.balance == Decimal.new("1000")
     end
   end
 

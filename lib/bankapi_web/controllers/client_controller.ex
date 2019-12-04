@@ -3,6 +3,7 @@ defmodule BankWeb.ClientController do
 
   alias Bank.Clients
   alias Bank.Clients.Client
+  alias Bank.Accounts
 
   action_fallback BankWeb.FallbackController
 
@@ -12,7 +13,9 @@ defmodule BankWeb.ClientController do
   end
 
   def create(conn, %{"client" => client_params}) do
-    with {:ok, %Client{} = client} <- Clients.create_client(client_params) do
+    with {:ok, %Client{} = client} <- Clients.create_client(client_params),
+         {:ok, %{} = account_data} <- Accounts.generate_account_data(client),
+         {:ok, _} <- Accounts.create_account(account_data, client.id) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.client_path(conn, :show, client))

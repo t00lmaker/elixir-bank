@@ -63,6 +63,11 @@ defmodule BankWeb.AccountControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
+    test "the attribute client_id should be required", %{conn: conn} do
+      conn = post(conn, Routes.account_path(conn, :create), account: @create_attrs)
+      assert "client_id é obrigatorio" = json_response(conn, 422)["msg"]
+    end
+
     test "renders errors when data is invalid", %{conn: conn} do
       client = client_fixture()
 

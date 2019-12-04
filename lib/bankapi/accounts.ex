@@ -3,9 +3,7 @@ defmodule Bank.Accounts do
   The Accounts context.
   """
 
-  # @minimum_balance 0
-
-  # @initial_balance 1000
+  @initial_balance 1000
 
   import Ecto.Query, warn: false
   alias Bank.Repo
@@ -108,5 +106,14 @@ defmodule Bank.Accounts do
   """
   def change_account(%Account{} = account) do
     Account.changeset(account, %{})
+  end
+
+  def generate_account_data(_client) do
+    {:ok,
+     %{
+       balance: @initial_balance,
+       identify: "xpto",
+       type: "A"
+     }}
   end
 end

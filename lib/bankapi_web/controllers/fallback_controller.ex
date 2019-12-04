@@ -23,7 +23,7 @@ defmodule BankWeb.FallbackController do
   def call(conn, {:error, %{msg: msg, status: status}}) do
     conn
     |> put_status(status)
-    |> text(msg)
+    |> json(%{msg: msg})
   end
 
   def call(conn, error) do
