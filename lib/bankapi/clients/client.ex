@@ -11,6 +11,7 @@ defmodule Bank.Clients.Client do
     field :name, :string
     field :social_id, :string
     field :is_active, :boolean, default: true
+    field :email, :string
     has_many :accounts, Bank.Accounts.Account
 
     timestamps()
@@ -19,7 +20,7 @@ defmodule Bank.Clients.Client do
   @doc false
   def changeset(client, attrs) do
     client
-    |> cast(attrs, [:name, :social_id, :birth_date, :is_active])
-    |> validate_required([:name, :social_id, :birth_date])
+    |> cast(attrs, [:name, :social_id, :birth_date, :is_active, :email])
+    |> validate_required([:name, :social_id, :birth_date, :email])
   end
 end

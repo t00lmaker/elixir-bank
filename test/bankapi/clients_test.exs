@@ -3,19 +3,25 @@ defmodule Bank.ClientsTest do
 
   alias Bank.Clients
 
-  @valid_attrs %{birth_date: "some birth_date", name: "some name", social_id: "some social_id"}
-
-  def client_valid_attrs, do: @valid_attrs
-
   describe "clients" do
     alias Bank.Clients.Client
+
+    @valid_attrs %{
+      birth_date: "some birth_date",
+      name: "some name",
+      social_id: "some social_id",
+      email: "my@mail.com"
+    }
 
     @update_attrs %{
       birth_date: "some updated birth_date",
       name: "some updated name",
-      social_id: "some updated social_id"
+      social_id: "some updated social_id",
+      email: "other@mail.com"
     }
-    @invalid_attrs %{birth_date: nil, name: nil, social_id: nil}
+    @invalid_attrs %{birth_date: nil, name: nil, social_id: nil, email: nil}
+
+    def client_valid_attrs, do: @valid_attrs
 
     def client_fixture(attrs \\ %{}) do
       {:ok, client} =

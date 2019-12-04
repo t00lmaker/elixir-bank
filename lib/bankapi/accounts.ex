@@ -112,8 +112,32 @@ defmodule Bank.Accounts do
     {:ok,
      %{
        balance: @initial_balance,
-       identify: "xpto",
+       identify: generate_identify(),
        type: "A"
      }}
+  end
+
+  defp generate_identify() do
+    max_alf = String.to_integer("ZZ", 36)
+    min_alf = String.to_integer("AA", 36)
+
+    alf_num =
+      min_alf
+      |> rand_in_interval(max_alf)
+      |> Integer.to_string(36)
+
+    min_num = 1000
+    max_num = 9999
+
+    num = rand_in_interval(min_num, max_num)
+
+    "#{num}-#{alf_num}"
+  end
+
+  defp rand_in_interval(min, max) do
+    max
+    |> Kernel.-(min)
+    |> :rand.uniform()
+    |> Kernel.+(min)
   end
 end

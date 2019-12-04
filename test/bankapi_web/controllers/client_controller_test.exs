@@ -10,14 +10,16 @@ defmodule BankWeb.ClientControllerTest do
   @create_attrs %{
     birth_date: "some birth_date",
     name: "some name",
-    social_id: "some social_id"
+    social_id: "some social_id",
+    email: "my@mail.com"
   }
   @update_attrs %{
     birth_date: "some updated birth_date",
     name: "some updated name",
-    social_id: "some updated social_id"
+    social_id: "some updated social_id",
+    email: "other@mail.com"
   }
-  @invalid_attrs %{birth_date: nil, name: nil, social_id: nil}
+  @invalid_attrs %{birth_date: nil, name: nil, social_id: nil, email: nil}
 
   def fixture(:client) do
     {:ok, client} = Clients.create_client(@create_attrs)
@@ -47,7 +49,8 @@ defmodule BankWeb.ClientControllerTest do
                "birth_date" => "some birth_date",
                "name" => "some name",
                "social_id" => "some social_id",
-               "is_active" => true
+               "is_active" => true,
+               "email" => "my@mail.com"
              } = json_response(conn, 200)["data"]
     end
 
@@ -86,7 +89,8 @@ defmodule BankWeb.ClientControllerTest do
                "birth_date" => "some updated birth_date",
                "name" => "some updated name",
                "social_id" => "some updated social_id",
-               "is_active" => true
+               "is_active" => true,
+               "email" => "other@mail.com"
              } = json_response(conn, 200)["data"]
     end
 
@@ -110,7 +114,8 @@ defmodule BankWeb.ClientControllerTest do
                "birth_date" => "some birth_date",
                "name" => "some name",
                "social_id" => "some social_id",
-               "is_active" => false
+               "is_active" => false,
+               "email" => "my@mail.com"
              } = json_response(conn, 200)["data"]
     end
   end
