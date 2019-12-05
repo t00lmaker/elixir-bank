@@ -40,10 +40,8 @@ defmodule Bank.Clients do
   def get_client!(id) do
     Client
     |> Repo.get!(id)
-    |> Repo.preload(:user) 
+    |> Repo.preload(:user)
   end
-
-
 
   @doc """
   Creates a client.

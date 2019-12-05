@@ -6,9 +6,19 @@ defmodule Bank.UsersTest do
   describe "users" do
     alias Bank.Users.User
 
-    @valid_attrs %{password_hash: "some password_hash", username: "some username"}
-    @update_attrs %{password_hash: "some updated password_hash", username: "some updated username"}
-    @invalid_attrs %{password_hash: nil, username: nil}
+    @valid_attrs %{
+      password: "some password",
+      password_confirmation: "some password",
+      username: "some username"
+    }
+
+    @update_attrs %{
+      password: "some updated password",
+      password_confirmation: "some updated password",
+      username: "some updated username"
+    }
+
+    @invalid_attrs %{password: nil, password_confirmation: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -21,17 +31,21 @@ defmodule Bank.UsersTest do
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert Users.list_users() == [user]
+      all_users = Users.list_users()
+      [first_user | _] = all_users
+      assert length(all_users) == 1
+      assert first_user.id == user.id
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert Users.get_user!(user.id) == user
+      user_get = Users.get_user!(user.id)
+      assert user_get.id == user.id
     end
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Users.create_user(@valid_attrs)
-      assert user.password_hash == "some password_hash"
+      assert user.password_hash
       assert user.username == "some username"
     end
 
@@ -41,15 +55,17 @@ defmodule Bank.UsersTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      assert {:ok, %User{} = user} = Users.update_user(user, @update_attrs)
-      assert user.password_hash == "some updated password_hash"
-      assert user.username == "some updated username"
+      assert {:ok, %User{} = user_update} = Users.update_user(user, @update_attrs)
+      refute user.password_hash == user_update.password_hash
+      assert user_update.username == "some updated username"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = Users.update_user(user, @invalid_attrs)
-      assert user == Users.get_user!(user.id)
+      user_after = Users.get_user!(user.id)
+      assert user.username == user.username
+      assert user.password_hash == user_after.password_hash
     end
 
     test "delete_user/1 deletes the user" do

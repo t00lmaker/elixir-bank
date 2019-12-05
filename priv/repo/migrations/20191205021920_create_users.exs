@@ -7,7 +7,7 @@ defmodule Bank.Repo.Migrations.CreateUsers do
       add :username, :string
       add :password_hash, :string
       add :client_id, references(:clients, on_delete: :nothing, type: :binary_id)
-      
+
       timestamps()
     end
 

@@ -1,4 +1,6 @@
 defmodule Bank.Users.User do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
@@ -8,7 +10,7 @@ defmodule Bank.Users.User do
   schema "users" do
     field :password_hash, :string
     field :username, :string
-    
+
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
@@ -20,9 +22,9 @@ defmodule Bank.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password, :password_confirmation])   
-    |> validate_required([:username, :password, :password_confirmation]) 
-    |> validate_length(:password, min: 8) 
+    |> cast(attrs, [:username, :password, :password_confirmation])
+    |> validate_required([:username, :password, :password_confirmation])
+    |> validate_length(:password, min: 8)
     |> validate_confirmation(:password)
     |> unique_constraint(:username)
     |> put_password_hash
@@ -30,12 +32,11 @@ defmodule Bank.Users.User do
 
   defp put_password_hash(changeset) do
     case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: pass}}
-        ->
-          put_change(changeset, :password_hash, hashpwsalt(pass))
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :password_hash, hashpwsalt(pass))
+
       _ ->
-          changeset
+        changeset
     end
   end
 end
-

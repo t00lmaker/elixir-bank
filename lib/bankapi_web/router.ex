@@ -10,6 +10,6 @@ defmodule BankWeb.Router do
 
     resources "/accounts", AccountController, except: [:new, :edit]
     resources "/clients", ClientController, except: [:new, :edit]
-    resources "/users", UserController, only: [:create, :show]
+    resources "/users", UserController, except: [:new, :edit]
   end
 end

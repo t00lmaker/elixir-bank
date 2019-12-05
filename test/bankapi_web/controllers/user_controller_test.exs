@@ -5,14 +5,16 @@ defmodule BankWeb.UserControllerTest do
   alias Bank.Users.User
 
   @create_attrs %{
-    password_hash: "some password_hash",
+    password: "some password",
+    password_confirmation: "some password",
     username: "some username"
   }
   @update_attrs %{
-    password_hash: "some updated password_hash",
+    password: "some updated password",
+    password_confirmation: "some updated password",
     username: "some updated username"
   }
-  @invalid_attrs %{password_hash: nil, username: nil}
+  @invalid_attrs %{password: nil, password_confirmation: nil, username: nil}
 
   def fixture(:user) do
     {:ok, user} = Users.create_user(@create_attrs)
@@ -21,13 +23,6 @@ defmodule BankWeb.UserControllerTest do
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  describe "index" do
-    test "lists all users", %{conn: conn} do
-      conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
-    end
   end
 
   describe "create user" do
@@ -39,7 +34,6 @@ defmodule BankWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "password_hash" => "some password_hash",
                "username" => "some username"
              } = json_response(conn, 200)["data"]
     end
@@ -61,7 +55,6 @@ defmodule BankWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "password_hash" => "some updated password_hash",
                "username" => "some updated username"
              } = json_response(conn, 200)["data"]
     end
