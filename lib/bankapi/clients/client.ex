@@ -12,8 +12,10 @@ defmodule Bank.Clients.Client do
     field :social_id, :string
     field :is_active, :boolean, default: true
     field :email, :string
+    
     has_many :accounts, Bank.Accounts.Account
-
+    has_one :user, Bank.Users.User
+    
     timestamps()
   end
 
@@ -21,6 +23,8 @@ defmodule Bank.Clients.Client do
   def changeset(client, attrs) do
     client
     |> cast(attrs, [:name, :social_id, :birth_date, :is_active, :email])
+    |> cast_assoc(:user, with: &Bank.Users.User.changeset/2)
+    |> validate_format(:email, ~r/@/) 
     |> validate_required([:name, :social_id, :birth_date, :email])
   end
 end
