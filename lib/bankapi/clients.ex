@@ -18,7 +18,9 @@ defmodule Bank.Clients do
 
   """
   def list_clients do
-    Repo.all(Client)
+    Client
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +37,13 @@ defmodule Bank.Clients do
       ** (Ecto.NoResultsError)
 
   """
-  def get_client!(id), do: Repo.get!(Client, id)
+  def get_client!(id) do
+    Client
+    |> Repo.get!(id)
+    |> Repo.preload(:user) 
+  end
+
+
 
   @doc """
   Creates a client.

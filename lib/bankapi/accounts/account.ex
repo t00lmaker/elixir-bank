@@ -12,7 +12,6 @@ defmodule Bank.Accounts.Account do
     field :is_active, :boolean, default: true
     field :type, :string
     belongs_to :client, Bank.Clients.Client
-
     timestamps()
   end
 
