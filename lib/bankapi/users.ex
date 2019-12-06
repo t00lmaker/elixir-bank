@@ -4,8 +4,9 @@ defmodule Bank.Users do
   """
 
   import Ecto.Query, warn: false
-  alias Bank.Repo
 
+  alias Bank.Repo
+  alias Bank.Guardian
   alias Bank.Users.User
 
   @doc """
@@ -100,5 +101,23 @@ defmodule Bank.Users do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def authentic(username, password) do
+    with %User{} = user <- Repo.get_by(User, username: username),
+         {:ok, %User{} = user} <- check_password(password, user),
+         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user) do
+       {:ok, jwt}
+    else
+       _ -> {:error, :unauthorized}
+    end
+  end
+
+  defp check_password(password, user) do
+    if Bcrypt.verify_pass(password, user.password_hash) do
+      {:ok, user}
+    else
+      {:error, :unauthorized}
+    end
   end
 end

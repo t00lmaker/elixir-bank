@@ -1,4 +1,10 @@
 defmodule Bank.Guardian do
+  @moduledoc """
+    Esse modulo gerencia o JWT (JSON WEB TOKEN),
+    que garante a autenticação e acesso dos usuários 
+    a Api. 
+  """
+  
   use Guardian, otp_app: :bankapi
 
   def subject_for_token(user, _claims) do
@@ -6,17 +12,10 @@ defmodule Bank.Guardian do
     {:ok, sub}
   end
 
-  def subject_for_token(_, _) do
-    {:error, :reason_for_error}
-  end
-
   def resource_from_claims(claims) do
     id = claims["sub"]
     resource = Bank.Users.get_user!(id)
-    {:ok,  resource}
+    {:ok, resource}
   end
 
-  def resource_from_claims(_claims) do
-    {:error, :reason_for_error}
-  end
 end
