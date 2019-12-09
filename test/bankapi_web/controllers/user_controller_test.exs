@@ -4,6 +4,8 @@ defmodule BankWeb.UserControllerTest do
   alias Bank.Users
   alias Bank.Users.User
 
+  import Bank.AuthTestHelper, only: [api_token: 0]
+
   @create_attrs %{
     password: "some password",
     password_confirmation: "some password",
@@ -22,7 +24,13 @@ defmodule BankWeb.UserControllerTest do
   end
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, jwt, _} = api_token()
+
+    {:ok,
+     conn:
+       conn
+       |> put_req_header("accept", "application/json")
+       |> put_req_header("authorization", "bearer " <> jwt)}
   end
 
   describe "create user" do
@@ -41,6 +49,15 @@ defmodule BankWeb.UserControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    test "should be protected", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :create), user: @create_attrs)
+
+      assert response(conn, 401)
     end
   end
 
@@ -63,6 +80,15 @@ defmodule BankWeb.UserControllerTest do
       conn = put(conn, Routes.user_path(conn, :update, user), user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "should be protected", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :update, user), user: @update_attrs)
+
+      assert response(conn, 401)
+    end
   end
 
   describe "delete user" do
@@ -75,6 +101,15 @@ defmodule BankWeb.UserControllerTest do
       assert_error_sent 404, fn ->
         get(conn, Routes.user_path(conn, :show, user))
       end
+    end
+
+    test "should be protected", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :update, user))
+
+      assert response(conn, 401)
     end
   end
 

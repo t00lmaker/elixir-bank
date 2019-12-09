@@ -3,6 +3,8 @@ defmodule Bank.UsersTest do
 
   alias Bank.Users
 
+  import Bank.AuthTestHelper, only: [create_user: 0]
+
   describe "users" do
     alias Bank.Users.User
 
@@ -77,6 +79,21 @@ defmodule Bank.UsersTest do
     test "change_user/1 returns a user changeset" do
       user = user_fixture()
       assert %Ecto.Changeset{} = Users.change_user(user)
+    end
+
+    test "authetic return token when username and password are valids" do
+      user = create_user()
+      assert {:ok, _} = Users.authentic(user.username, user.password)
+    end
+
+    test "authentic return unauthorized when username not found" do
+      user = create_user()
+      assert {:error, :unauthorized} == Users.authentic(user.username <> "some", user.password)
+    end
+
+    test "authentic return unauthorized when password diferent from user" do
+      user = create_user()
+      assert {:error, :unauthorized} == Users.authentic(user.username, user.password <> "some")
     end
   end
 end

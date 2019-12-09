@@ -4,7 +4,7 @@ defmodule Bank.Guardian do
     que garante a autenticação e acesso dos usuários 
     a Api. 
   """
-  
+
   use Guardian, otp_app: :bankapi
 
   def subject_for_token(user, _claims) do
@@ -17,5 +17,4 @@ defmodule Bank.Guardian do
     resource = Bank.Users.get_user!(id)
     {:ok, resource}
   end
-
 end

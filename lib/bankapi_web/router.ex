@@ -16,7 +16,7 @@ defmodule BankWeb.Router do
   # public
   scope "/api", BankWeb do
     pipe_through [:api, :api_auth]
-   
+
     post "/login", AuthController, :login
   end
 

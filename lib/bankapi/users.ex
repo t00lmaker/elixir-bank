@@ -107,9 +107,9 @@ defmodule Bank.Users do
     with %User{} = user <- Repo.get_by(User, username: username),
          {:ok, %User{} = user} <- check_password(password, user),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user) do
-       {:ok, jwt}
+      {:ok, jwt}
     else
-       _ -> {:error, :unauthorized}
+      _ -> {:error, :unauthorized}
     end
   end
 
