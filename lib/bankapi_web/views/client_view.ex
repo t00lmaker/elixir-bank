@@ -1,6 +1,7 @@
 defmodule BankWeb.ClientView do
   use BankWeb, :view
   alias BankWeb.ClientView
+  alias BankWeb.UserView
 
   def render("index.json", %{clients: clients}) do
     %{data: render_many(clients, ClientView, "client.json")}
@@ -17,7 +18,8 @@ defmodule BankWeb.ClientView do
       social_id: client.social_id,
       birth_date: client.birth_date,
       is_active: client.is_active,
-      email: client.email
+      email: client.email,
+      user: render_one(client.user, UserView, "user.json")
     }
   end
 end

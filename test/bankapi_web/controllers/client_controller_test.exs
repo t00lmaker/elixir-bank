@@ -2,6 +2,8 @@ defmodule BankWeb.ClientControllerTest do
   use BankWeb.ConnCase
 
   import Ecto.Query, only: [from: 2]
+  import Bank.AuthTestHelper, only: [api_token: 0]
+
   alias Bank.Accounts.Account
   alias Bank.Clients
   alias Bank.Clients.Client
@@ -27,14 +29,13 @@ defmodule BankWeb.ClientControllerTest do
   end
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
+    {:ok, jwt, _} = api_token()
 
-  describe "index" do
-    test "lists all clients", %{conn: conn} do
-      conn = get(conn, Routes.client_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
-    end
+    {:ok,
+     conn:
+       conn
+       |> put_req_header("accept", "application/json")
+       |> put_req_header("authorization", "bearer " <> jwt)}
   end
 
   describe "create client" do
@@ -73,6 +74,15 @@ defmodule BankWeb.ClientControllerTest do
       account = Repo.one(query)
       assert account.balance == Decimal.new("1000")
     end
+
+    test " should be protected", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :create), client: @create_attrs)
+
+      assert response(conn, 401)
+    end
   end
 
   describe "update client" do
@@ -98,6 +108,15 @@ defmodule BankWeb.ClientControllerTest do
       conn = put(conn, Routes.client_path(conn, :update, client), client: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "should be protected", %{conn: conn, client: client} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :update, client), client: @update_attrs)
+
+      assert response(conn, 401)
+    end
   end
 
   describe "delete client inactive client" do
@@ -117,6 +136,15 @@ defmodule BankWeb.ClientControllerTest do
                "is_active" => false,
                "email" => "my@mail.com"
              } = json_response(conn, 200)["data"]
+    end
+
+    test "should be protected", %{conn: conn, client: client} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :delete, client))
+
+      assert response(conn, 401)
     end
   end
 

@@ -3,7 +3,9 @@ defmodule BankWeb.AccountControllerTest do
 
   alias Bank.Accounts
   alias Bank.Accounts.Account
-  alias Bank.ClientsTest
+  alias Bank.Clients
+
+  import Bank.AuthTestHelper, only: [api_token: 0]
 
   @create_attrs %{
     balance: "120.5",
@@ -19,18 +21,32 @@ defmodule BankWeb.AccountControllerTest do
   }
   @invalid_attrs %{balance: nil, identify: nil, is_active: nil, type: nil}
 
-  def client_fixture() do
-    ClientsTest.client_fixture(ClientsTest.client_valid_attrs())
+  @create_client_attrs %{
+    birth_date: "some birth_date",
+    name: "some name",
+    social_id: "some social_id",
+    email: "my@mail.com"
+  }
+
+  def fixture(:client) do
+    {:ok, client} = Clients.create_client(@create_client_attrs)
+    client
   end
 
   def fixture(:account) do
-    client = client_fixture()
+    client = fixture(:client)
     {:ok, account} = Accounts.create_account(@create_attrs, client.id)
     account
   end
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, jwt, _} = api_token()
+
+    {:ok,
+     conn:
+       conn
+       |> put_req_header("accept", "application/json")
+       |> put_req_header("authorization", "bearer " <> jwt)}
   end
 
   describe "index" do
@@ -38,11 +54,20 @@ defmodule BankWeb.AccountControllerTest do
       conn = get(conn, Routes.account_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
+
+    test "show all should be protected", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> get(Routes.account_path(conn, :index))
+
+      assert response(conn, 401)
+    end
   end
 
   describe "create account" do
     test "renders account when data is valid", %{conn: conn} do
-      client = client_fixture()
+      client = fixture(:client)
 
       conn =
         post(conn, Routes.account_path(conn, :create),
@@ -69,7 +94,7 @@ defmodule BankWeb.AccountControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      client = client_fixture()
+      client = fixture(:client)
 
       conn =
         post(conn, Routes.account_path(conn, :create),
@@ -78,6 +103,20 @@ defmodule BankWeb.AccountControllerTest do
         )
 
       assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    test "should be protected", %{conn: conn} do
+      client = fixture(:client)
+
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> post(Routes.account_path(conn, :create),
+          account: @create_attrs,
+          client_id: client.id
+        )
+
+      assert response(conn, 401)
     end
   end
 
@@ -103,6 +142,15 @@ defmodule BankWeb.AccountControllerTest do
       conn = put(conn, Routes.account_path(conn, :update, account), account: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "update should be protected", %{conn: conn, account: account} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> put(Routes.account_path(conn, :update, account), account: @update_attrs)
+
+      assert response(conn, 401)
+    end
   end
 
   describe "delete account" do
@@ -115,6 +163,15 @@ defmodule BankWeb.AccountControllerTest do
       assert_error_sent 404, fn ->
         get(conn, Routes.account_path(conn, :show, account))
       end
+    end
+
+    test "delete should be proteced", %{conn: conn, account: account} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer ")
+        |> delete(Routes.account_path(conn, :delete, account))
+
+      assert response(conn, 401)
     end
   end
 
