@@ -21,4 +21,4 @@ script:
   - mix credo
   - mix coveralls.travis
 after_script:
-  - MIX_ENV=docs mix inch
+  - MIX_ENV=test mix inch.report
