@@ -15,7 +15,7 @@ use Mix.Config
 
 config :bankapi, BankWeb.Endpoint,
   url: [scheme: "https", host: "https://api-bank-elixir.herokuapp.com/", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],  
+  force_ssl: [rewrite_on: [:x_forwarded_proto]] 
 
 # Do not print debug messages in production
 config :logger, level: :info
