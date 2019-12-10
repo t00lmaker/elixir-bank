@@ -5,8 +5,8 @@ defmodule Bank.Users do
 
   import Ecto.Query, warn: false
 
-  alias Bank.Repo
   alias Bank.Guardian
+  alias Bank.Repo
   alias Bank.Users.User
 
   @doc """
