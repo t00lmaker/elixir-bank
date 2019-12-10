@@ -29,7 +29,7 @@ RUN mix compile
 
 # build release (uncomment COPY if rel/ exists)
 # COPY rel rel
-RUN mix release
+RUN MIX_ENV=prod mix release
 
 # prepare release image
 FROM alpine:3.9 AS app
