@@ -53,7 +53,8 @@ defmodule Bank.MixProject do
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]},
       {:bcrypt_elixir, "~> 2.0"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.0"},
+      {:distillery, "~> 2.0"}    
     ]
   end
 

@@ -42,4 +42,6 @@ COPY --from=build /app/_build/prod/rel/bankapi ./
 RUN chown -R nobody: /app
 USER nobody
 
-ENV HOME=/app
+ENV HOME=/app 
+
+ENTRYPOINT bin/bankapi start
