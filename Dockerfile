@@ -44,4 +44,4 @@ USER nobody
 
 ENV HOME=/app 
 
-ENTRYPOINT "bin/bankapi start"
+CMD ["bin/bankapi", "start"]
