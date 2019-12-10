@@ -6,34 +6,51 @@ defmodule Bank.Release do
   @app :bankapi
 
   def migrate do
-    load_app()
+    Application.ensure_all_started(@app)
 
     for repo <- repos() do
       {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
-      run_seeds_for(repo)
     end
   end
 
   def rollback(repo, version) do
-    load_app()
+    Application.ensure_all_started(@app)
+
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
-  defp repos do
-    Application.fetch_env!(@app, :ecto_repos)
+  def seed do
+    Application.ensure_all_started(@app)
+
+    for repo <- repos() do
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &do_seed(&1))
+    end
   end
 
-  def run_seeds_for(repo) do
-    # Run the seed script if it exists
-    seed_script = seeds_path(repo)
+  defp do_seed(repo) do
+    seed_script = priv_path_for(repo, "seeds.exs")
+
     if File.exists?(seed_script) do
-      IO.puts "Running seed script.."
       Code.eval_file(seed_script)
     end
   end
 
-  defp load_app do
+  defp priv_path_for(repo, filename) do
+    app = Keyword.get(repo.config, :otp_app)
+
+    repo_underscore =
+      repo
+      |> Module.split()
+      |> List.last()
+      |> Macro.underscore()
+
+    priv_dir = "#{:code.priv_dir(app)}"
+
+    Path.join([priv_dir, repo_underscore, filename])
+  end
+
+  defp repos do
     Application.load(@app)
-    Application.ensure_started(:ssl)
+    Application.fetch_env!(@app, :ecto_repos)
   end
 end
