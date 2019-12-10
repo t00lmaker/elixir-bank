@@ -38,7 +38,7 @@ RUN apk add --update bash openssl
 RUN mkdir /app
 WORKDIR /app
 
-COPY --from=build /app/_build/prod/rel/my_app ./
+COPY --from=build /app/_build/prod/rel/bankapi ./
 RUN chown -R nobody: /app
 USER nobody
 
