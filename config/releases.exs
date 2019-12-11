@@ -12,7 +12,7 @@ database_url =
     """
 
 config :bankapi, Bank.Repo,
-  ssl: true,
+  #ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
@@ -32,7 +32,8 @@ config :bankapi, BankWeb.Endpoint,
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 #
-#     config :bankapi, BankWeb.Endpoint, server: true
+
+config :bankapi, BankWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
