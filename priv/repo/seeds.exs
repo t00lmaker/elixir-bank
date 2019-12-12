@@ -13,4 +13,8 @@
 alias Bank.Users
 
 # Adicionar user admin a base.
-Users.create_user(%{username: "admin", password: "adminAdmin", password_confirmation: "adminAdmin"})
+Users.create_user(%{
+  username: "admin",
+  password: "adminAdmin",
+  password_confirmation: "adminAdmin"
+})

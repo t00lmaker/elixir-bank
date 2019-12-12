@@ -1,5 +1,5 @@
 defmodule Bank.ReleaseTasks do
-   @moduledoc """
+  @moduledoc """
     Esse modulo guarda funções utilitarias que 
     não estao disponiveis via mix em produção. 
   """
