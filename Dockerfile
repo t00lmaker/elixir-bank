@@ -17,6 +17,7 @@ ENV MIX_ENV=prod
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
+COPY rel rel
 RUN mix deps.get
 RUN mix deps.compile
 
@@ -29,7 +30,7 @@ RUN mix compile
 
 # build release (uncomment COPY if rel/ exists)
 # COPY rel rel
-RUN mix release
+RUN mix distillery.release 
 
 # prepare release image
 FROM alpine:3.9 AS app
@@ -47,4 +48,4 @@ USER nobody
 ENV HOME=/app 
 
 # start app
-CMD ["bin/bankapi", "start"]
+CMD ["bin/bankapi", "foreground"]

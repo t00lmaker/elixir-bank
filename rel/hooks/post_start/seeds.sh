@@ -2,4 +2,4 @@
 
 echo "Running Seeds"
 
-/bankapi eval "Bank.ReleaseTasks.seed"
+bin/bankapi eval "Bank.ReleaseTasks.seed"
