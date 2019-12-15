@@ -11,7 +11,10 @@ defmodule Bank.Accounts.Account do
     field :identify, :string
     field :is_active, :boolean, default: true
     field :type, :string
+
     belongs_to :client, Bank.Clients.Client
+    has_many :operations, Bank.Operations.Operation
+
     timestamps()
   end
 

@@ -24,7 +24,10 @@ defmodule BankWeb.Router do
   scope "/api", BankWeb do
     pipe_through [:api, :api_auth, :ensure_auth]
 
-    resources "/accounts", AccountController, except: [:new, :edit]
+    resources "/accounts", AccountController, except: [:new, :edit] do
+      resources "/operations", OperationController, except: [:new, :edit]
+    end
+
     resources "/clients", ClientController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
   end

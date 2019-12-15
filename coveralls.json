@@ -4,7 +4,8 @@
     "lib/bankapi_web/channels/",
     "lib/bankapi_web/views/",
     "lib/bankapi_web.ex",
-    "lib/bankapi/application.ex"
+    "lib/bankapi/application.ex",
+    "lib/release_tasks.ex"
   ],
   "coverage_options": {
     "treat_no_relevant_lines_as_covered": true,
