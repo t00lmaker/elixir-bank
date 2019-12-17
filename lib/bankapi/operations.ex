@@ -4,11 +4,18 @@ defmodule Bank.Operations do
   """
 
   import Ecto.Query, warn: false
-  alias Bank.Repo
+
   alias Bank.Accounts.Account
-  alias Bank.Operations.Operation
-  alias Bank.ValidateOperation
   alias Bank.CallBackOperation
+  alias Bank.Operations.Operation
+  alias Bank.Repo
+  alias Bank.ValidateOperation
+
+  def total_operations(_period) do
+    sum = Repo.one(from o in Operation, select: sum(o.value))
+    operations = Repo.all(Operation)
+    {sum, operations}
+  end
 
   @doc """
   Returns the list of operations.

@@ -1,9 +1,9 @@
 defmodule BankWeb.OperationController do
   use BankWeb, :controller
 
-  alias Bank.Users
   alias Bank.Operations
   alias Bank.Operations.Operation
+  alias Bank.Users
 
   action_fallback BankWeb.FallbackController
 
@@ -46,5 +46,10 @@ defmodule BankWeb.OperationController do
     with {:ok, %Operation{}} <- Operations.delete_operation(operation) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def total(conn, %{"period" => period}) do
+    {total, operations} = Operations.total_operations(period)
+    render(conn, "total_operations.json", total: total, operations: operations)
   end
 end

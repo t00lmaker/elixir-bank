@@ -19,4 +19,11 @@ defmodule BankWeb.OperationView do
       is_consolidaded: operation.is_consolidaded
     }
   end
+
+  def render("total_operations.json", %{total: total, operations: operations}) do
+    %{ 
+      total: total,
+      operations: render_many(operations, OperationView, "operation.json")
+    }
+  end
 end
