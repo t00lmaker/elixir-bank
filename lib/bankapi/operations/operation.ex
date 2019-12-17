@@ -15,6 +15,8 @@ defmodule Bank.Operations.Operation do
     field :type, :string
     field :value, :decimal
 
+    field :account_target_id, :binary, virtual: true
+
     belongs_to :account, Bank.Accounts.Account
     belongs_to :operation_origin, Bank.Operations.Operation
 
@@ -24,7 +26,7 @@ defmodule Bank.Operations.Operation do
   @doc false
   def changeset(operation, attrs) do
     operation
-    |> cast(attrs, [:description, :type, :value, :is_consolidaded])
+    |> cast(attrs, [:description, :type, :value, :is_consolidaded, :account_target_id])
     |> validate_required([:description, :type, :value, :is_consolidaded])
   end
 end

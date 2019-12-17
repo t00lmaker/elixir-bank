@@ -8,6 +8,7 @@ defmodule Bank.Operations do
   alias Bank.Accounts.Account
   alias Bank.Operations.Operation
   alias Bank.ValidateOperation
+  alias Bank.CallBackOperation
 
   @doc """
   Returns the list of operations.
@@ -69,7 +70,8 @@ defmodule Bank.Operations do
     {_, result} =
       Repo.transaction(fn ->
         with {:ok, %Operation{} = op} <- create_operation(attrs, acc_id),
-             {:ok, %Operation{} = op} <- validate(op) do
+             {:ok, %Operation{} = op} <- validate(op),
+             {:ok, %Operation{} = op} <- callback(op) do
           {:ok, op}
         else
           error -> Repo.rollback(error)
@@ -102,6 +104,10 @@ defmodule Bank.Operations do
   """
   def validate(%Operation{} = operation) do
     ValidateOperation.validate(operation)
+  end
+
+  def callback(%Operation{} = operation) do
+    CallBackOperation.run(operation)
   end
 
   @doc """
@@ -149,5 +155,13 @@ defmodule Bank.Operations do
   """
   def change_operation(%Operation{} = operation) do
     Operation.changeset(operation, %{})
+  end
+
+  def assoc_origin(operation, origin_op) do
+    operation
+    |> Repo.preload(:operation_origin)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:operation_origin, origin_op)
+    |> Repo.update!()
   end
 end
