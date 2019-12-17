@@ -29,21 +29,40 @@ defmodule Bank.OperationsTest do
     }
     @invalid_attrs %{description: nil, type: nil, value: nil}
 
-    def account_fixture() do
+    def account_fixture(attrs \\ %{}) do
       {:ok, client} = Clients.create_client(@client_attrs)
-      {:ok, account} = Accounts.create_account(@account_attrs, client.id)
+
+      {:ok, account} =
+        attrs
+        |> Enum.into(@account_attrs)
+        |> Accounts.create_account(client.id)
+
       account
     end
 
-    def operation_fixture(attrs \\ %{}) do
-      account = account_fixture()
+    def operation_fixture() do
+      operation_fixture(account_fixture())
+    end
 
+    def operation_fixture(account, attrs \\ %{}) do
       {:ok, operation} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Operations.create_operation(account.id)
 
       operation
+    end
+
+    test "list_operations/1 returns all operations to espefic account" do
+      account1 = account_fixture(%{identify: "account1"})
+      account2 = account_fixture(%{identify: "account2"})
+
+      operation_acc_1 = operation_fixture(account1)
+      operation_acc_2 = operation_fixture(account2)
+      operation2_acc_2 = operation_fixture(account2)
+
+      assert Operations.list_operations(account1.id) == [operation_acc_1]
+      assert Operations.list_operations(account2.id) == [operation_acc_2, operation2_acc_2]
     end
 
     test "list_operations/0 returns all operations" do

@@ -7,6 +7,7 @@ defmodule Bank.Operations do
   alias Bank.Repo
   alias Bank.Accounts.Account
   alias Bank.Operations.Operation
+  alias Bank.ValidateOperation
 
   @doc """
   Returns the list of operations.
@@ -19,6 +20,21 @@ defmodule Bank.Operations do
   """
   def list_operations do
     Repo.all(Operation)
+  end
+
+  @doc """
+  Returns the list of operations to especify account_id.
+
+  ## Examples
+
+      iex> list_operations(account_id)
+      [%Operation{}, ...]
+
+  """
+  def list_operations(account_id) do
+    Operation
+    |> where(account_id: ^account_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -49,12 +65,43 @@ defmodule Bank.Operations do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_valid_operation(attrs \\ %{}, acc_id) do
+    {_, result} =
+      Repo.transaction(fn ->
+        with {:ok, %Operation{} = op} <- create_operation(attrs, acc_id),
+             {:ok, %Operation{} = op} <- validate(op) do
+          {:ok, op}
+        else
+          error -> Repo.rollback(error)
+        end
+      end)
+
+    result
+  end
+
   def create_operation(attrs \\ %{}, account_id) do
     Account
     |> Repo.get!(account_id)
+    |> Repo.preload(client: [:user])
     |> Ecto.build_assoc(:operations)
     |> Operation.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Validate operation to type.
+
+  ## Examples
+
+      iex> validate(op, user)
+      %{:ok, op}
+
+      iex> list_operations(op, user)
+      %{:error, %{msg: 'some message'}}
+
+  """
+  def validate(%Operation{} = operation) do
+    ValidateOperation.validate(operation)
   end
 
   @doc """

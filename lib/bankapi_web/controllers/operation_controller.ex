@@ -1,18 +1,22 @@
 defmodule BankWeb.OperationController do
   use BankWeb, :controller
 
+  alias Bank.Users
   alias Bank.Operations
   alias Bank.Operations.Operation
 
   action_fallback BankWeb.FallbackController
 
-  def index(conn, _params) do
-    operations = Operations.list_operations()
+  def index(conn, %{"account_id" => acc_id}) do
+    operations = Operations.list_operations(acc_id)
     render(conn, "index.json", operations: operations)
   end
 
   def create(conn, %{"operation" => op_params, "account_id" => acc_id}) do
-    with {:ok, %Operation{} = op} <- Operations.create_operation(op_params, acc_id) do
+    user = Guardian.Plug.current_resource(conn)
+
+    with {:ok, _} <- Users.user_account(user, acc_id),
+         {:ok, %Operation{} = op} <- Operations.create_valid_operation(op_params, acc_id) do
       localization = Routes.account_operation_path(conn, :show, acc_id, op)
 
       conn

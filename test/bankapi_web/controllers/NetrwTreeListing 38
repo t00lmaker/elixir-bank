@@ -1,0 +1,52 @@
+../
+elixir-bank/
+| .git/
+| _build/
+| config/
+| deps/
+| lib/
+| | bankapi/
+| | bankapi_web/
+| | | channels/
+| | | controllers/
+| | | | account_controller.ex
+| | | | auth_controller.ex
+| | | | client_controller.ex
+| | | | fallback_controller.ex
+| | | | operation_controller.ex
+| | | | user_controller.ex
+| | | views/
+| | | auth_pipeline.ex
+| | | endpoint.ex
+| | | erro_handler.ex
+| | | gettext.ex
+| | | router.ex
+| | bankapi.ex
+| | bankapi_web.ex
+| | guardian.ex
+| | release_tasks.ex
+| priv/
+| rel/
+| test/
+| | bankapi/
+| | bankapi_web/
+| | | channels/
+| | | controllers/
+| | | views/
+| | support/
+| | test_helper.exs
+| .credo.exs
+| .formatter.exs
+| .gitignore
+| .travis.yml
+| Dockerfile
+| LICENSE
+| NetrwTreeListing 6
+| README.md
+| coverall.yml
+| coveralls.json
+| docker-compose.yml
+| entrypoint.sh
+| heroku.yml
+| mix.exs
+| mix.lock
