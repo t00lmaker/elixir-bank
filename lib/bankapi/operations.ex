@@ -11,9 +11,30 @@ defmodule Bank.Operations do
   alias Bank.Repo
   alias Bank.ValidateOperation
 
-  def total_operations(_period) do
-    sum = Repo.one(from o in Operation, select: sum(o.value))
-    operations = Repo.all(Operation)
+  @doc """
+  Returns the total of operation and list of operations
+  at a period, period = [day | month | year].
+
+  ## Examples
+
+      iex> list_operations()
+      [%Operation{}, ...]
+
+  """
+  @spec total_operations(any) :: {any, any}
+  def total_operations(period \\ "day") do
+    dynamic =
+      case period do
+        "year" ->
+          dynamic([o], o.inserted_at > ago(1, "year"))
+        "month" ->
+          dynamic([o], o.inserted_at > ago(1, "month"))
+        _ ->
+          dynamic([o], o.inserted_at > ago(1, "day"))
+      end
+
+    sum = Repo.one(from o in Operation, where: ^dynamic, select: sum(o.value))
+    operations = Repo.all(from o in Operation, where: ^dynamic)
     {sum, operations}
   end
 
