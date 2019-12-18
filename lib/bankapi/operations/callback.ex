@@ -1,11 +1,13 @@
-defmodule Bank.CallBackOperation do
+defmodule Bank.Operations.CallBack do
   @moduledoc """
   Validate Operations bisiness roles.
   """
-  alias Bank.Repo
-  alias Bank.Operations
+
   alias Bank.Accounts.Account
+  alias Bank.Operations
+  alias Bank.Operations.Notify
   alias Bank.Operations.Operation
+  alias Bank.Repo
 
   @doc """
   Validate operation to type.
@@ -31,6 +33,7 @@ defmodule Bank.CallBackOperation do
   end
 
   defp callback_type(%Operation{type: "SAQUE"} = operation) do
+    Notify.send(operation)
     {:ok, operation}
   end
 

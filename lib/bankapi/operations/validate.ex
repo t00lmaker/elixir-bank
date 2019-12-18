@@ -1,10 +1,11 @@
-defmodule Bank.ValidateOperation do
+defmodule Bank.Operations.Validate do
   @moduledoc """
   Validate Operations bisiness roles.
   """
-  alias Bank.Repo
-  alias Bank.Operations.Operation
 
+  alias Bank.Operations.Operation
+  alias Bank.Repo
+  
   @doc """
   Validate operation to type.
 

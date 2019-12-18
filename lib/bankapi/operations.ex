@@ -6,10 +6,10 @@ defmodule Bank.Operations do
   import Ecto.Query, warn: false
 
   alias Bank.Accounts.Account
-  alias Bank.CallBackOperation
+  alias Bank.Operations.CallBack
   alias Bank.Operations.Operation
+  alias Bank.Operations.Validate
   alias Bank.Repo
-  alias Bank.ValidateOperation
 
   @doc """
   Returns the total of operation and list of operations
@@ -131,11 +131,11 @@ defmodule Bank.Operations do
 
   """
   def validate(%Operation{} = operation) do
-    ValidateOperation.validate(operation)
+    Validate.validate(operation)
   end
 
   def callback(%Operation{} = operation) do
-    CallBackOperation.run(operation)
+    CallBack.run(operation)
   end
 
   @doc """
