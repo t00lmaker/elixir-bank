@@ -1,8 +1,11 @@
 defmodule Bank.OperationsTest do
+  @moduledoc """
+    Teste para Operations
+  """
   use Bank.DataCase
 
-  alias Bank.Clients
   alias Bank.Accounts
+  alias Bank.Clients
   alias Bank.Operations
 
   describe "operations" do
@@ -62,7 +65,9 @@ defmodule Bank.OperationsTest do
       operation2_acc_2 = operation_fixture(account2)
 
       assert Operations.list_operations(account1.id) == [operation_acc_1]
-      assert Operations.list_operations(account2.id) == [operation_acc_2, operation2_acc_2]
+      assert Enum.member?(Operations.list_operations(account2.id), operation_acc_2)
+      assert Enum.member?(Operations.list_operations(account2.id), operation2_acc_2)
+      refute Enum.member?(Operations.list_operations(account2.id), operation_acc_1)
     end
 
     test "list_operations/0 returns all operations" do

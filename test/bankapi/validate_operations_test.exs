@@ -1,10 +1,14 @@
 defmodule Bank.ValidationOperationTest do
+  @moduledoc """
+    Testes para Validação de Operações.
+  """
+  
   use Bank.DataCase
 
-  alias Bank.Clients
   alias Bank.Accounts
+  alias Bank.Clients
   alias Bank.Operations
-  alias Bank.ValidateOperation
+  alias Bank.Operations.Validate
 
   @client_attrs %{
     name: "Luan Pontes",
@@ -58,7 +62,7 @@ defmodule Bank.ValidationOperationTest do
   describe "generics role validate operation" do
     test "should be generics roles" do
       operation = operation_fixture()
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
   end
 
@@ -67,21 +71,21 @@ defmodule Bank.ValidationOperationTest do
       account = account_fixture()
       operation = operation_fixture(account, %{value: 999})
 
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
 
     test "permitided when balance = value" do
       account = account_fixture()
       operation = operation_fixture(account, %{value: 1000})
 
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
 
     test "not permitided when balance < value" do
       account = account_fixture()
       op = operation_fixture(account, %{value: 1001})
       msg = "Credito insuficiente"
-      assert {:invalid, %{msg: msg}} == ValidateOperation.validate(op)
+      assert {:invalid, %{msg: msg}} == Validate.validate(op)
     end
   end
 
@@ -90,21 +94,21 @@ defmodule Bank.ValidationOperationTest do
       account = account_fixture()
       operation = operation_fixture(account, %{type: "TRANSFERENCIA", value: 999})
 
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
 
     test "permitided when balance = value" do
       account = account_fixture()
       operation = operation_fixture(account, %{type: "TRANSFERENCIA", value: 1000})
 
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
 
     test "not permitided when balance < value" do
       account = account_fixture()
       op = operation_fixture(account, %{type: "TRANSFERENCIA", value: 1001})
       msg = "Credito insuficiente"
-      assert {:invalid, %{msg: msg}} == ValidateOperation.validate(op)
+      assert {:invalid, %{msg: msg}} == Validate.validate(op)
     end
   end
 
@@ -113,7 +117,7 @@ defmodule Bank.ValidationOperationTest do
       account = account_fixture()
       operation = operation_fixture(account, %{type: "CREDITO"})
 
-      assert {:ok, operation} == ValidateOperation.validate(operation)
+      assert {:ok, operation} == Validate.validate(operation)
     end
   end
 end
