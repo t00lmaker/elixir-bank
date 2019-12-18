@@ -63,6 +63,8 @@ especificação da [API](https://documenter.getpostman.com/view/593922/SWECWF1b)
 
 ## Modelo
 
+![Modelo_ER](https://github.com/t00lmaker/elixir-bank/blob/master/img/ER.png)
+
 ## Testes
 
 Testes podem ser executados com o seguinte comando:
