@@ -4,7 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/t00lmaker/elixir-bank/badge.svg?branch=master)](https://coveralls.io/github/t00lmaker/elixir-bank?branch=master)
 [![Inline docs](http://inch-ci.org/github/t00lmaker/elixir-bank.svg?branch=HEAD)](http://inch-ci.org/github/t00lmaker/elixir-bank)
 
-Desafio técnico para criação de uma API de um banco utlizando Elixir.
+Desafio técnico para criação de uma API de um banco utlizando Elixir. 
+
+Veja em produção [aqui](https://bank-api-elixir.herokuapp.com/). 
 
 
 ## O que vai encontrar aqui ?
