@@ -28,7 +28,7 @@ defmodule BankWeb.Router do
       resources "/operations", OperationController, except: [:new, :edit]
     end
 
-    get "operations/:period", OperationController, :total
+    get "/operations/:period", OperationController, :total
 
     resources "/clients", ClientController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
