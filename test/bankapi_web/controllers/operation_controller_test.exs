@@ -159,7 +159,7 @@ defmodule BankWeb.OperationControllerTest do
 
     test "total should be return total operation", %{conn: conn, operation: operation} do
       conn = get(conn, Routes.operation_path(conn, :total, :day))
-      total_value = operation.value
+      _total_value = operation.value
 
       assert %{
                "total" => total_value,

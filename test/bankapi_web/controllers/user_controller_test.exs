@@ -36,7 +36,7 @@ defmodule BankWeb.UserControllerTest do
   end
 
   describe "index" do
-    test "lists all users", %{user: %User{id: id, username: username}, conn: conn} do
+    test "lists all users", %{user: %User{id: _id, username: _username}, conn: conn} do
       conn = get(conn, Routes.user_path(conn, :index))
       assert [%{"id" => id, "username" => username}] = json_response(conn, 200)["data"]
     end
