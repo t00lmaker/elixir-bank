@@ -6,9 +6,6 @@
 
 Desafio técnico para criação de uma API de um banco utlizando Elixir. 
 
-Veja em produção [aqui](https://bank-api-elixir.herokuapp.com/). 
-
-
 ## O que vai encontrar aqui ?
  Uma API REST impleementada utilizando [Elixir](https://elixir-lang.org/) e o framwork [Phoenix](https://www.phoenixframework.org) que simula um sistema bancario simples. Além disso, essa é uma aplicação 'dockerizada' juntamente com um banco de dados Postgres em um docker-compose.
 
@@ -24,7 +21,7 @@ Veja em produção [aqui](https://bank-api-elixir.herokuapp.com/).
 
 ## API
 
-A documentação da API pode ser encontrada [aqui](https://documenter.getpostman.com/view/593922/SWECWF1b). 
+A documentação da API pode ser encontrada [aqui](https://documenter.getpostman.com/view/593922/SWECWF1b).
 
 ## Setup
 
