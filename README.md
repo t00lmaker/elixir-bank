@@ -65,6 +65,14 @@ especificação da [API](https://documenter.getpostman.com/view/593922/SWECWF1b)
 
 ![Modelo_ER](https://github.com/t00lmaker/elixir-bank/blob/master/img/ER.png)
 
+- **users**: Utiliza para acesso no sistema
+- **clients**: Clientes cadastrados no sistema, que podem possuir uma ou mais _accounts_. 
+- **accounts**: Representa as contas de um cliente, que por sua vez pode ter diversas _operations_ associadas.
+- **operations**: Representa as operações realizadas em uma _account_, que por sua vez pode ter diversas operações associadas. O campo _type_ representa o tipo de operação e tem o seguinte domínio: 
+   * _SAQUE_ : Retirada de dinheiro da conta.
+   * _TRANSFERENCIA_ : Movimentação de recursos de uma conta para outra.
+   * _CREDITO_ : Entrada de dinheiro na conta, que pode ser oriundo de uma _TRANSFERENCIA_, é referenciada pelo campo _origin_operation_id_.
+
 ## Testes
 
 Testes podem ser executados com o seguinte comando:
