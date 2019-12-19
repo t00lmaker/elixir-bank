@@ -1,4 +1,4 @@
-defmodule Bank.Operations.CallBack do
+defmodule Bank.Operations.Callback do
   @moduledoc """
   Validate Operations bisiness roles.
   """

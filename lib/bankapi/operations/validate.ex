@@ -5,7 +5,7 @@ defmodule Bank.Operations.Validate do
 
   alias Bank.Operations.Operation
   alias Bank.Repo
-  
+
   @doc """
   Validate operation to type.
 

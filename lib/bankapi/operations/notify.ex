@@ -16,7 +16,7 @@ defmodule Bank.Operations.Notify do
   def send_email(_msg) do
     Task.Supervisor.async_nolink(Bank.TaskSupervisor, fn ->
       Logger.debug("Envidando email")
-      :timer.sleep(10000)
+      :timer.sleep(10_000)
       Logger.debug("Email enviado com sucesso.")
     end)
   end

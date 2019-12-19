@@ -6,7 +6,7 @@ defmodule Bank.Operations do
   import Ecto.Query, warn: false
 
   alias Bank.Accounts.Account
-  alias Bank.Operations.CallBack
+  alias Bank.Operations.Callback
   alias Bank.Operations.Operation
   alias Bank.Operations.Validate
   alias Bank.Repo
@@ -27,8 +27,10 @@ defmodule Bank.Operations do
       case period do
         "year" ->
           dynamic([o], o.inserted_at > ago(1, "year"))
+
         "month" ->
           dynamic([o], o.inserted_at > ago(1, "month"))
+
         _ ->
           dynamic([o], o.inserted_at > ago(1, "day"))
       end
@@ -135,7 +137,7 @@ defmodule Bank.Operations do
   end
 
   def callback(%Operation{} = operation) do
-    CallBack.run(operation)
+    Callback.run(operation)
   end
 
   @doc """

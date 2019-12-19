@@ -52,6 +52,12 @@ defmodule Bank.AccountsTest do
       assert Accounts.list_accounts() == [account]
     end
 
+    test "get_account_by_client! retturn all accounts by client_id" do
+      client = client_fixture()
+      {:ok, %Account{} = account} = Accounts.create_account(@valid_attrs, client.id)
+      assert Accounts.get_account_by_client!(client.id) == [account]
+    end
+
     test "get_account!/1 returns the account with given id" do
       account = account_fixture()
       assert Accounts.get_account!(account.id) == account

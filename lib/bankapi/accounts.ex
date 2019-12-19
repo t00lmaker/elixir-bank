@@ -130,7 +130,7 @@ defmodule Bank.Accounts do
      }}
   end
 
-  defp generate_identify() do
+  defp generate_identify do
     max_alf = String.to_integer("ZZ", 36)
     min_alf = String.to_integer("AA", 36)
 

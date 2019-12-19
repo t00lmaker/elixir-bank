@@ -21,7 +21,7 @@ defmodule BankWeb.OperationView do
   end
 
   def render("total_operations.json", %{total: total, operations: operations}) do
-    %{ 
+    %{
       total: total,
       operations: render_many(operations, OperationView, "operation.json")
     }

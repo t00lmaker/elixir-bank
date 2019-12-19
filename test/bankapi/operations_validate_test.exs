@@ -1,8 +1,8 @@
-defmodule Bank.ValidationOperationTest do
+defmodule Bank.Operations.ValidateTest do
   @moduledoc """
     Testes para Validação de Operações.
   """
-  
+
   use Bank.DataCase
 
   alias Bank.Accounts

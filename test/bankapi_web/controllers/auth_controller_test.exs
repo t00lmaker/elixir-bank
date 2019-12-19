@@ -47,4 +47,16 @@ defmodule BankWeb.AuthControllerTest do
       assert claims["sub"] == user.id
     end
   end
+
+  describe "private urls" do
+    test "should response 401 status for invalid token", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("authorization", "bearer " <> "invalid token")
+        |> put_req_header("content-type", "application/json")
+        |> get(Routes.user_path(conn, :index))
+
+      assert response(conn, 401)
+    end
+  end
 end

@@ -4,7 +4,7 @@ defmodule BankWeb.UserControllerTest do
   alias Bank.Users
   alias Bank.Users.User
 
-  import Bank.AuthTestHelper, only: [api_token: 0]
+  import Bank.AuthTestHelper, only: [create_user: 0, api_token: 1]
 
   @create_attrs %{
     password: "some password",
@@ -24,13 +24,22 @@ defmodule BankWeb.UserControllerTest do
   end
 
   setup %{conn: conn} do
-    {:ok, jwt, _} = api_token()
+    user = create_user()
+    {:ok, jwt, _} = api_token(user)
 
     {:ok,
+     user: user,
      conn:
        conn
        |> put_req_header("accept", "application/json")
        |> put_req_header("authorization", "bearer " <> jwt)}
+  end
+
+  describe "index" do
+    test "lists all users", %{user: %User{id: id, username: username}, conn: conn} do
+      conn = get(conn, Routes.user_path(conn, :index))
+      assert [%{"id" => id, "username" => username}] = json_response(conn, 200)["data"]
+    end
   end
 
   describe "create user" do

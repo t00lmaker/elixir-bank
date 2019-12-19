@@ -2,6 +2,10 @@ ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Bank.Repo, :manual)
 
 defmodule Bank.AuthTestHelper do
+  @moduledoc """
+    Helper para ajudar nos testes com autenticação. 
+  """
+
   alias Bank.Guardian
   alias Bank.Users
   alias Bank.Users.User
@@ -25,7 +29,7 @@ defmodule Bank.AuthTestHelper do
     Guardian.encode_and_sign(user)
   end
 
-  def api_token() do
+  def api_token do
     Guardian.encode_and_sign(create_user())
   end
 end

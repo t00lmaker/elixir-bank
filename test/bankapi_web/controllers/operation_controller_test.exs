@@ -154,6 +154,20 @@ defmodule BankWeb.OperationControllerTest do
     end
   end
 
+  describe "total operation" do
+    setup [:create_operation]
+
+    test "total should be return total operation", %{conn: conn, operation: operation} do
+      conn = get(conn, Routes.operation_path(conn, :total, :day))
+      total_value = operation.value
+
+      assert %{
+               "total" => total_value,
+               "operations" => [operation]
+             } = json_response(conn, 200)
+    end
+  end
+
   defp create_operation(%{account: account}) do
     operation = fixture(:operation, account)
     {:ok, operation: operation}

@@ -43,7 +43,7 @@ defmodule Bank.OperationsTest do
       account
     end
 
-    def operation_fixture() do
+    def operation_fixture do
       operation_fixture(account_fixture())
     end
 
@@ -54,6 +54,18 @@ defmodule Bank.OperationsTest do
         |> Operations.create_operation(account.id)
 
       operation
+    end
+
+    test "total_operation/0 return total operations to one day ago" do
+      operation_fixture()
+      {total, _} = Operations.total_operations()
+      assert total == Decimal.new("120.5")
+    end
+
+    test "total_operation/0 return all operations to one day ago" do
+      operation_acc_1 = operation_fixture()
+      {_, operations} = Operations.total_operations()
+      assert operations == [operation_acc_1]
     end
 
     test "list_operations/1 returns all operations to espefic account" do
@@ -122,6 +134,20 @@ defmodule Bank.OperationsTest do
     test "change_operation/1 returns a operation changeset" do
       operation = operation_fixture()
       assert %Ecto.Changeset{} = Operations.change_operation(operation)
+    end
+
+    test "put_association/2 should be associate two opertions, second as origin" do
+      account = account_fixture()
+      operation = operation_fixture(account)
+      operation_origin = operation_fixture(account)
+      Operations.assoc_origin(operation, operation_origin)
+
+      op =
+        Operation
+        |> where(operation_origin_id: ^operation_origin.id)
+        |> Repo.one()
+
+      assert operation.id == op.id
     end
   end
 end
