@@ -39,7 +39,20 @@ defmodule Bank.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_account!(id), do: Repo.get!(Account, id)
+  def get_account!(id) do
+    Account
+    |> Repo.get!(id)
+  end
+
+  @doc """
+  Gets accounts to client.
+
+  """
+  def get_account_by_client!(client_id) do
+    Account
+    |> where(client_id: ^client_id)
+    |> Repo.all()
+  end
 
   @doc """
   Creates a account.
@@ -117,7 +130,7 @@ defmodule Bank.Accounts do
      }}
   end
 
-  defp generate_identify() do
+  defp generate_identify do
     max_alf = String.to_integer("ZZ", 36)
     min_alf = String.to_integer("AA", 36)
 

@@ -6,6 +6,7 @@ defmodule Bank.Users do
   import Ecto.Query, warn: false
 
   alias Bank.Repo
+  alias Bank.Clients.Client
   alias Bank.Guardian
   alias Bank.Users.User
 
@@ -101,6 +102,24 @@ defmodule Bank.Users do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def user_account(user, account_id) do
+    client = user.client
+
+    if is_client?(client) && has_account?(client, account_id) do
+      {:ok, user}
+    else
+      {:error, %{msg: "Conta não atorizada"}}
+    end
+  end
+
+  defp is_client?(nil), do: false
+  defp is_client?(%Client{}), do: true
+
+  defp has_account?(client, acc_id) do
+    client = Repo.preload(client, [:accounts])
+    Enum.any?(client.accounts, &(&1.id == acc_id))
   end
 
   def authentic(username, password) do

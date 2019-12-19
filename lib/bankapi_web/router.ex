@@ -13,18 +13,23 @@ defmodule BankWeb.Router do
     plug :accepts, ["json"]
   end
 
-  # public
+  # Public
   scope "/api", BankWeb do
     pipe_through [:api, :api_auth]
 
     post "/login", AuthController, :login
   end
 
-  # private 
+  # Private 
   scope "/api", BankWeb do
     pipe_through [:api, :api_auth, :ensure_auth]
 
-    resources "/accounts", AccountController, except: [:new, :edit]
+    resources "/accounts", AccountController, except: [:new, :edit] do
+      resources "/operations", OperationController, except: [:new, :edit]
+    end
+
+    get "/operations/:period", OperationController, :total
+
     resources "/clients", ClientController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
   end

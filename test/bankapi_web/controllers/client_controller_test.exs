@@ -38,6 +38,13 @@ defmodule BankWeb.ClientControllerTest do
        |> put_req_header("authorization", "bearer " <> jwt)}
   end
 
+  describe "index" do
+    test "lists all clients", %{conn: conn} do
+      conn = get(conn, Routes.client_path(conn, :index))
+      assert json_response(conn, 200)["data"] == []
+    end
+  end
+
   describe "create client" do
     test "renders client when data is valid", %{conn: conn} do
       conn = post(conn, Routes.client_path(conn, :create), client: @create_attrs)

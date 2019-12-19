@@ -13,6 +13,13 @@ defmodule BankWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
+  def call(conn, %Ecto.Changeset{} = changeset) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(BankWeb.ChangesetView)
+    |> render("error.json", changeset: changeset)
+  end
+
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
@@ -26,9 +33,21 @@ defmodule BankWeb.FallbackController do
     |> json(%{msg: msg})
   end
 
+  def call(conn, {:error, %{msg: msg}}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> json(%{msg: msg})
+  end
+
+  def call(conn, {:invalid, %{msg: msg}}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> json(%{msg: msg})
+  end
+
   def call(conn, error) do
     conn
     |> put_status(:internal_server_error)
-    |> text(error)
+    |> json(error)
   end
 end
